@@ -9,6 +9,9 @@ class Car{
         float cL;
         float cD;
         float mu;
+        float v_max;
+        float max_power;
+        float max_torque;
         std::vector<float> hardpoints;
         
     int load_data(const std::string& filename){
@@ -48,6 +51,13 @@ class Car{
         return 0;
     }
 
+    std::vector<float> calculate_ggv(){
+        std::vector<float> ggv_diagram;
+
+        
+
+        return ggv_diagram;
+    }
     
 };
 
