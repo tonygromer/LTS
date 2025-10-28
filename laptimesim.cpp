@@ -2,19 +2,43 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <cmath>
 
 class Car{
     public:
         float mass;
-        float cL;
+        float cLA;
         float cD;
         float mu;
         float v_max;
         float max_power;
         float max_torque;
+        int n_velocites;
         std::vector<float> hardpoints;
+        std::vector<float> velocities;
+        float g = 9.82;
+
+        struct state
+        {
+            std::vector<float> velocity;
+            std::vector<float> position;
+            std::vector<float> acceleration;
+        };
         
-    int load_data(const std::string& filename){
+        Car(const std::string &filename){
+            load_data(filename);
+            
+            // v^2 = 2 * Fd / cDA*rho
+            // Fd = max_power / v
+            // v^2 = 2*max_power/ v*cDA*rho
+            v_max = std::pow(2*max_power*1000/(1.225*cD), (float) 1/3);
+            for (int i = 0; i < n_velocites; i++){
+                velocities.push_back((float) i / v_max);
+            }
+
+        }
+        
+    int load_data(const std::string &filename){
         std::string line;
         std::ifstream myfile;
         myfile.open(filename);
@@ -29,8 +53,8 @@ class Car{
                     mass = val;
                 }
 
-                else if (str_var == "cL"){
-                    cL = val;
+                else if (str_var == "cLA"){
+                    cLA = val;
                 }
 
                 else if (str_var == "cD"){
@@ -39,6 +63,10 @@ class Car{
 
                 else if (str_var == "mu"){
                     mu = val;
+                }
+
+                else if (str_var == "power"){
+                    max_power = val;
                 }
             }
         }
@@ -53,7 +81,21 @@ class Car{
 
     std::vector<float> calculate_ggv(){
         std::vector<float> ggv_diagram;
+        // Vill jag ha dessa som vector/array?
+        float Fn;
+        float Fx;
+        float Fy;
 
+        for (int i = 0; i< 10; i++){
+
+            // Normal forces
+            Fn = mass*g + cLA*velocities;
+            
+            //Maximum longitudinal
+            
+            //Maximum lateral
+            
+        }
         
 
         return ggv_diagram;
@@ -95,8 +137,8 @@ int write_data(const std::string& filename){
     }
 
 int main(){
-    Car TestCar;
-    TestCar.load_data("example.txt");
+    Car TestCar("example.txt");
+
 
     return 0;
 }
