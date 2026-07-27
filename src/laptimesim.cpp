@@ -3,6 +3,8 @@
 #include <vector>
 #include <sstream>
 
+// Maybe switch to json in the future? Or csv?
+// Move  load write to somewhere.
 class Car{
     public:
         float mass;
@@ -86,7 +88,7 @@ int write_data(const std::string& filename){
 
 int main(){
     Car TestCar;
-    TestCar.load_data("example.txt");
+    TestCar.load_data("../conf/example.txt");
 
     return 0;
 }
